@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="../Backend/UpSkills.Api/UpSkills.Api.csproj" />
+  <Project Path="../Frontend/UpSkills.BlazorClient/UpSkills.BlazorClient.csproj" />
+  <Project Path="../Infrastructure/UpSkills.Infrastructure/UpSkills.Infrastructure.csproj" />
+  <Project Path="../Shared/UpSkills.Business/UpSkills.Business.csproj" Id="10b5501f-864b-43dd-9b4e-9f4330694624" />
+  <Project Path="../Shared/UpSkills.Models/UpSkills.Models.csproj" Id="0df777ff-88a1-49d8-b4c2-731a660774c2" />
+  <Project Path="UpSkills.AppHost.csproj" />
+</Solution>

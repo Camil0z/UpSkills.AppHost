@@ -735,3 +735,111 @@ a:focus {
 
 /* end footer section*/
 /*# sourceMappingURL=style.css.map */
+
+/* =============================================
+   UPSKILLS - Nuevos módulos (M1-M4)
+   Paleta: #864ddf / #203376 / #feb543 / #a053f9
+   ============================================= */
+
+.btn-upskills-primary {
+  display: inline-block; padding: 10px 32px;
+  background-color: #a053f9; color: #f9fcfb;
+  border-radius: 25px; border: none; font-weight: 600;
+  cursor: pointer; transition: all .3s; text-decoration: none; font-size: 0.95rem;
+}
+.btn-upskills-primary:hover { background-color: #864ddf; transform: translateY(-3px); color: #f9fcfb; }
+.btn-upskills-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.btn-upskills-secondary {
+  display: inline-block; padding: 10px 28px;
+  background-color: transparent; color: #864ddf;
+  border-radius: 25px; border: 2px solid #864ddf; font-weight: 600;
+  cursor: pointer; transition: all .3s; text-decoration: none; font-size: 0.95rem;
+}
+.btn-upskills-secondary:hover { background-color: #864ddf; color: #f9fcfb; transform: translateY(-3px); }
+
+.btn-upskills-sm {
+  display: inline-block; padding: 6px 18px;
+  background-color: #feb543; color: #fff;
+  border-radius: 20px; border: none; font-size: 0.85rem;
+  cursor: pointer; transition: all .3s; text-decoration: none;
+}
+.btn-upskills-sm:hover { background-color: #e09d20; color: #fff; transform: translateY(-2px); }
+
+.btn-xs { padding: 3px 10px; font-size: 0.78rem; border-radius: 12px; border: none; cursor: pointer; transition: all .2s; }
+.btn-purple { background-color: #864ddf; color: #fff; }
+.btn-purple:hover { background-color: #6b35c0; }
+.btn-danger-custom { background-color: #e74c3c; color: #fff; }
+.btn-danger-custom:hover { background-color: #c0392b; }
+.btn-success-custom { background-color: #27ae60; color: #fff; }
+.btn-success-custom:hover { background-color: #1e8449; }
+.btn-warning-custom { background-color: #f39c12; color: #fff; }
+.btn-warning-custom:hover { background-color: #d68910; }
+.btn-outline-info { background-color: transparent; color: #0b93b1; border: 1px solid #0b93b1; }
+.btn-outline-info:hover { background-color: #0b93b1; color: #fff; }
+
+.curso-card {
+  background: #fff; border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(134, 77, 223, 0.12); overflow: hidden;
+  transition: transform .3s, box-shadow .3s;
+}
+.curso-card:hover { transform: translateY(-6px); box-shadow: 0 8px 25px rgba(134, 77, 223, 0.2); }
+.curso-card-img { position: relative; height: 180px; overflow: hidden; background: linear-gradient(135deg, #864ddf, #203376); }
+.curso-card-img img { width: 100%; height: 100%; object-fit: cover; }
+.curso-card-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.curso-card-img-placeholder span { color: #f9fcfb; font-weight: bold; font-size: 1.1rem; }
+.curso-badge { position: absolute; top: 10px; left: 10px; background-color: #feb543; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+.curso-card-body { padding: 16px; }
+.curso-card-body h5 { font-weight: 700; color: #1b3374; margin-bottom: 4px; font-size: 1rem; }
+.curso-instructor { font-size: 0.82rem; color: #864ddf; margin-bottom: 8px; }
+.curso-descripcion { font-size: 0.85rem; color: #555; margin-bottom: 10px; }
+.curso-meta { display: flex; gap: 12px; font-size: 0.78rem; color: #777; flex-wrap: wrap; }
+.curso-precio { font-size: 1.2rem; font-weight: 700; color: #864ddf; }
+
+.upskills-pagination .page-link { color: #864ddf; border-color: #d0b4f8; background-color: #fff; }
+.upskills-pagination .page-item.active .page-link { background-color: #864ddf; border-color: #864ddf; color: #fff; }
+.upskills-pagination .page-link:hover { background-color: #f3e8ff; }
+
+.curso-detalle-precio-box { background: rgba(255,255,255,0.12); border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.3); }
+.precio-grande { font-size: 2.2rem; font-weight: 700; color: #feb543; }
+.badge-categoria { background-color: #feb543; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
+
+.modulo-accordion { border: 1px solid #e0ccff; border-radius: 10px; overflow: hidden; }
+.modulo-header { width: 100%; background: linear-gradient(to right, #f3e8ff, #eaf0ff); border: none; padding: 12px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; text-align: left; transition: background .2s; }
+.modulo-header:hover { background: linear-gradient(to right, #e8d5ff, #dce8ff); }
+.modulo-numero { background-color: #864ddf; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; flex-shrink: 0; }
+.modulo-titulo { font-weight: 600; color: #1b3374; flex: 1; }
+.modulo-count { font-size: 0.78rem; color: #777; }
+.modulo-chevron { color: #864ddf; transition: transform .3s; font-size: 0.8rem; }
+.modulo-chevron.open { transform: rotate(180deg); }
+.modulo-body { padding: 10px 16px; background: #fafafa; }
+.modulo-header-instructor { width: 100%; background: linear-gradient(to right, #f3e8ff, #eaf0ff); padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+.material-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0e6ff; font-size: 0.88rem; }
+.material-item:last-child { border-bottom: none; }
+.curso-detalles-lista { list-style: none; padding: 0; }
+.curso-detalles-lista li { padding: 8px 0; border-bottom: 1px solid #f0e6ff; font-size: 0.9rem; }
+
+.badge-estado { padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+.estado-1 { background-color: #fdebd0; color: #d35400; }
+.estado-2 { background-color: #d4efdf; color: #1e8449; }
+.estado-3 { background-color: #fadbd8; color: #c0392b; }
+
+.upskills-table { border-collapse: separate; border-spacing: 0; width: 100%; }
+.upskills-table thead tr { background: linear-gradient(to right, #864ddf, #203376); }
+.upskills-table thead th { color: #fff; font-weight: 600; padding: 12px 14px; border: none; font-size: 0.88rem; }
+.upskills-table tbody tr { transition: background .2s; }
+.upskills-table tbody tr:hover { background-color: #f3e8ff; }
+.upskills-table tbody td { padding: 11px 14px; border-bottom: 1px solid #eee; font-size: 0.88rem; vertical-align: middle; }
+
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(32, 51, 118, 0.45); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.modal-upskills { background: #fff; border-radius: 16px; padding: 28px 32px; max-width: 640px; width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(134, 77, 223, 0.3); }
+.modal-upskills h4, .modal-upskills h5 { color: #1b3374; font-weight: 700; }
+
+.panel-modulos { background: #f9f6ff; border-radius: 12px; padding: 20px; border: 1px solid #e0ccff; }
+
+.inscripcion-card { background: #fff; border-radius: 12px; box-shadow: 0 3px 15px rgba(134, 77, 223, 0.1); overflow: hidden; transition: transform .3s; }
+.inscripcion-card:hover { transform: translateY(-4px); }
+.inscripcion-img { width: 100%; height: 140px; object-fit: cover; }
+.inscripcion-img-placeholder { width: 100%; height: 140px; background: linear-gradient(135deg, #864ddf, #203376); }
+.inscripcion-body { padding: 14px; }
+.inscripcion-body h6 { font-weight: 700; color: #1b3374; margin-bottom: 6px; }

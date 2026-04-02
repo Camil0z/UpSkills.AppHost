@@ -1,0 +1,248 @@
+@page "/instructor/cursos"
+@inject IJSRuntime JS
+
+<PageTitle>Mis Cursos | UpSkills</PageTitle>
+
+<div class="sub_page">
+    <div class="hero_area">
+        <NavMenu />
+    </div>
+
+    <section class="layout_padding">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="custom_heading-container" style="justify-content:flex-start;">
+                    <h2>Mis Cursos</h2>
+                </div>
+                <button class="btn-upskills-primary" @onclick="AbrirFormulario">+ Nuevo curso</button>
+            </div>
+
+            @if (!string.IsNullOrEmpty(MensajeExito))
+            {
+                <div class="alert alert-success">@MensajeExito</div>
+            }
+            @if (!string.IsNullOrEmpty(MensajeError))
+            {
+                <div class="alert alert-danger">@MensajeError</div>
+            }
+
+            <!-- Modal / Formulario de curso -->
+            @if (MostrarFormulario)
+            {
+                <div class="modal-overlay">
+                    <div class="modal-upskills">
+                        <h4>@(EditandoId.HasValue ? "Editar curso" : "Nuevo curso")</h4>
+                        <hr />
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label>Título *</label>
+                                <input class="form-control" @bind="Form.Titulo" maxlength="200" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Categoría *</label>
+                                <select class="form-control" @bind="Form.CategoriaId">
+                                    <option value="0">Seleccione...</option>
+                                    @foreach (var cat in Categorias)
+                                    {
+                                        <option value="@cat.Id">@cat.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción *</label>
+                            <textarea class="form-control" rows="3" @bind="Form.Descripcion"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>Duración (horas) *</label>
+                                <input type="number" class="form-control" @bind="Form.Duracion" min="1" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Precio ($) *</label>
+                                <input type="number" class="form-control" @bind="Form.Precio" min="0" step="0.01" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Estado</label>
+                                <select class="form-control" @bind="Form.Estado">
+                                    <option value="1">Borrador</option>
+                                    <option value="2">Publicado</option>
+                                    <option value="3">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>URL de imagen</label>
+                            <input class="form-control" @bind="Form.Imagen" placeholder="https://..." />
+                        </div>
+                        <div class="d-flex justify-content-end mt-3" style="gap:10px;">
+                            <button class="btn-upskills-secondary" @onclick="CerrarFormulario">Cancelar</button>
+                            <button class="btn-upskills-primary" @onclick="GuardarCurso" disabled="@Guardando">
+                                @(Guardando ? "Guardando..." : "Guardar")
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Panel de módulos -->
+            @if (CursoSeleccionado != null)
+            {
+                <div class="panel-modulos mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 style="color:#864ddf;">Módulos de: <em>@CursoSeleccionado.Titulo</em></h5>
+                        <div style="gap:8px; display:flex;">
+                            <button class="btn-upskills-sm" @onclick="AbrirFormularioModulo">+ Módulo</button>
+                            <button class="btn-upskills-secondary btn-sm" @onclick="() => CursoSeleccionado = null">Cerrar</button>
+                        </div>
+                    </div>
+
+                    @if (MostrarFormularioModulo)
+                    {
+                        <div class="form-row align-items-end mb-3">
+                            <div class="form-group col-md-6">
+                                <label>Título del módulo</label>
+                                <input class="form-control" @bind="FormModulo.Titulo" />
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Orden</label>
+                                <input type="number" class="form-control" @bind="FormModulo.Orden" min="1" />
+                            </div>
+                            <div class="form-group col-md-4 d-flex" style="gap:8px;">
+                                <button class="btn-upskills-primary" @onclick="GuardarModulo" disabled="@GuardandoModulo">
+                                    @(GuardandoModulo ? "..." : "Guardar módulo")
+                                </button>
+                                <button class="btn-upskills-secondary" @onclick="() => MostrarFormularioModulo = false">Cancelar</button>
+                            </div>
+                        </div>
+                    }
+
+                    @foreach (var mod in Modulos)
+                    {
+                        <div class="modulo-accordion mb-2">
+                            <div class="modulo-header-instructor">
+                                <span class="modulo-numero">@mod.Orden</span>
+                                <span class="modulo-titulo">@mod.Titulo</span>
+                                <span class="modulo-count">@mod.Materiales.Count mat.</span>
+                                <div style="gap:6px; display:flex;">
+                                    <button class="btn-xs btn-purple" @onclick="() => AbrirFormularioMaterial(mod.Id)">+ Material</button>
+                                    <button class="btn-xs btn-danger-custom" @onclick="() => EliminarModulo(mod.Id)">✕</button>
+                                </div>
+                            </div>
+                            @foreach (var mat in mod.Materiales)
+                            {
+                                <div class="material-item">
+                                    <span class="material-tipo @(mat.TipoId == 1 ? "archivo" : "enlace")">
+                                        @(mat.TipoId == 1 ? "📄" : "🔗")
+                                    </span>
+                                    <span>@mat.Titulo</span>
+                                    <span class="ml-auto text-muted" style="font-size:0.8rem;">@mat.Url</span>
+                                    <button class="btn-xs btn-danger-custom ml-2" @onclick="() => EliminarMaterial(mat.Id)">✕</button>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+
+            <!-- Formulario para añadir material -->
+            @if (ModuloParaMaterial.HasValue)
+            {
+                <div class="modal-overlay">
+                    <div class="modal-upskills">
+                        <h5>Agregar material al módulo</h5>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Título</label>
+                                <input class="form-control" @bind="FormMaterial.Titulo" />
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Tipo</label>
+                                <select class="form-control" @bind="FormMaterial.Tipo">
+                                    <option value="1">Archivo</option>
+                                    <option value="2">Enlace</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Orden</label>
+                                <input type="number" class="form-control" @bind="FormMaterial.Orden" min="1" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>URL / Enlace</label>
+                            <input class="form-control" @bind="FormMaterial.Url" placeholder="https://..." />
+                        </div>
+                        <div class="d-flex justify-content-end" style="gap:8px;">
+                            <button class="btn-upskills-secondary" @onclick="() => ModuloParaMaterial = null">Cancelar</button>
+                            <button class="btn-upskills-primary" @onclick="GuardarMaterial" disabled="@GuardandoMaterial">
+                                @(GuardandoMaterial ? "..." : "Guardar material")
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Tabla de cursos -->
+            @if (Cargando)
+            {
+                <div class="text-center py-4">
+                    <div class="spinner-border" style="color:#864ddf;"></div>
+                </div>
+            }
+            else if (!Cursos.Any())
+            {
+                <div class="text-center py-5">
+                    <h5 style="color:#864ddf;">Aún no has creado ningún curso</h5>
+                    <p>Haz clic en <strong>+ Nuevo curso</strong> para comenzar.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table upskills-table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Categoría</th>
+                                <th>Duración</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Inscritos</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var curso in Cursos)
+                            {
+                                <tr>
+                                    <td>@curso.Titulo</td>
+                                    <td>@curso.CategoriaNombre</td>
+                                    <td>@curso.Duracion h</td>
+                                    <td>@(curso.Precio == 0 ? "Gratis" : $"${curso.Precio:N0}")</td>
+                                    <td>
+                                        <span class="badge-estado estado-@curso.EstadoId">@curso.Estado</span>
+                                    </td>
+                                    <td>@curso.TotalInscritos</td>
+                                    <td>
+                                        <div style="gap:4px; display:flex; flex-wrap:wrap;">
+                                            <button class="btn-xs btn-purple" @onclick="() => EditarCurso(curso)">Editar</button>
+                                            <button class="btn-xs btn-outline-info" @onclick="() => GestionarModulos(curso)">Módulos</button>
+                                            @if (curso.EstadoId != 2)
+                                            {
+                                                <button class="btn-xs btn-success-custom" @onclick="() => CambiarEstado(curso.Id, 2)">Publicar</button>
+                                            }
+                                            @if (curso.EstadoId == 2)
+                                            {
+                                                <button class="btn-xs btn-warning-custom" @onclick="() => CambiarEstado(curso.Id, 1)">Borrador</button>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </section>
+</div>

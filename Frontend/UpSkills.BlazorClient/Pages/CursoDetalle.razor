@@ -1,0 +1,140 @@
+@page "/cursos/{Id:long}"
+@inject IJSRuntime JS
+
+<PageTitle>@(Curso?.Titulo ?? "Cargando...") | UpSkills</PageTitle>
+
+<div class="sub_page">
+    <div class="hero_area">
+        <NavMenu />
+    </div>
+
+    @if (Cargando)
+    {
+        <div class="text-center py-5 layout_padding">
+            <div class="spinner-border" style="color:#864ddf;" role="status"></div>
+            <p class="mt-3" style="color:#864ddf;">Cargando curso...</p>
+        </div>
+    }
+    else if (Curso == null)
+    {
+        <div class="text-center layout_padding">
+            <h3>Curso no encontrado</h3>
+            <a href="/cursos" class="btn-upskills-primary">Volver al catálogo</a>
+        </div>
+    }
+    else
+    {
+        <!-- Cabecera del curso -->
+        <section class="why_section layout_padding2">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <span class="badge-categoria mb-2">@Curso.CategoriaNombre</span>
+                        <h1 style="color:#f9fcfb; font-weight:bold;">@Curso.Titulo</h1>
+                        <p style="color:#f9fcfb; opacity:0.9;">@Curso.Descripcion</p>
+                        <div class="d-flex flex-wrap mt-3" style="gap:20px; color:#f9fcfb;">
+                            <span><strong>Instructor:</strong> @Curso.InstructorNombre</span>
+                            <span><strong>Duración:</strong> @Curso.Duracion horas</span>
+                            <span><strong>Módulos:</strong> @Curso.TotalModulos</span>
+                            <span><strong>Inscritos:</strong> @Curso.TotalInscritos</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mt-4 mt-md-0">
+                        <div class="curso-detalle-precio-box">
+                            <div class="precio-grande">@(Curso.Precio == 0 ? "Gratis" : $"${Curso.Precio:N0}")</div>
+
+                            @if (!string.IsNullOrEmpty(MensajeExito))
+                            {
+                                <div class="alert alert-success mt-3">@MensajeExito</div>
+                            }
+                            @if (!string.IsNullOrEmpty(MensajeError))
+                            {
+                                <div class="alert alert-danger mt-3">@MensajeError</div>
+                            }
+
+                            @if (YaInscrito)
+                            {
+                                <div class="alert alert-info mt-3">Ya estás inscrito en este curso.</div>
+                            }
+                            else
+                            {
+                                <button class="btn-upskills-primary w-100 mt-3" @onclick="Inscribirse" disabled="@InscribiendoSe">
+                                    @(InscribiendoSe ? "Procesando..." : "Inscribirse ahora")
+                                </button>
+                                @if (!SesionActiva)
+                                {
+                                    <p class="mt-2" style="font-size:0.85rem; color:#f9fcfb;">
+                                        <a href="/login" style="color:#feb543;">Inicia sesión</a> para inscribirte
+                                    </p>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contenido del curso (módulos) -->
+        <section class="layout_padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="custom_heading-container mb-4">
+                            <h2>Contenido del curso</h2>
+                        </div>
+
+                        @if (!Modulos.Any())
+                        {
+                            <p class="text-muted">Este curso aún no tiene contenido disponible.</p>
+                        }
+                        else
+                        {
+                            @foreach (var modulo in Modulos)
+                            {
+                                <div class="modulo-accordion mb-3">
+                                    <button class="modulo-header" @onclick="() => ToggleModulo(modulo.Id)">
+                                        <span class="modulo-numero">@modulo.Orden</span>
+                                        <span class="modulo-titulo">@modulo.Titulo</span>
+                                        <span class="modulo-count">@modulo.Materiales.Count materiales</span>
+                                        <span class="modulo-chevron @(ModulosAbiertos.Contains(modulo.Id) ? "open" : "")">▼</span>
+                                    </button>
+                                    @if (ModulosAbiertos.Contains(modulo.Id))
+                                    {
+                                        <div class="modulo-body">
+                                            @foreach (var mat in modulo.Materiales)
+                                            {
+                                                <div class="material-item">
+                                                    <span class="material-tipo @(mat.TipoId == 1 ? "archivo" : "enlace")">
+                                                        @(mat.TipoId == 1 ? "📄" : "🔗")
+                                                    </span>
+                                                    <span>@mat.Titulo</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="custom_heading-container mb-4">
+                            <h2>Detalles</h2>
+                        </div>
+                        <ul class="curso-detalles-lista">
+                            <li><strong>Categoría:</strong> @Curso.CategoriaNombre</li>
+                            <li><strong>Instructor:</strong> @Curso.InstructorNombre</li>
+                            <li><strong>Duración total:</strong> @Curso.Duracion horas</li>
+                            <li><strong>Módulos:</strong> @Curso.TotalModulos</li>
+                            <li><strong>Estudiantes:</strong> @Curso.TotalInscritos inscritos</li>
+                            <li><strong>Publicado:</strong> @Curso.CreadoEn.ToString("dd/MM/yyyy")</li>
+                        </ul>
+                        <a href="/cursos" class="btn-upskills-secondary w-100 text-center mt-3" style="display:block;">
+                            ← Volver al catálogo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+</div>

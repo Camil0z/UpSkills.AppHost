@@ -12,30 +12,35 @@ using UpSkills.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Añadir y configurar DBContext de Entity Framework para usar la Base de Datos
+// Aï¿½adir y configurar DBContext de Entity Framework para usar la Base de Datos
 builder.Services.AddDbContext<AppDbContext>(dbOptions =>
     dbOptions.UseNpgsql( //Npgsql es para PostGreSQL
-        builder.Configuration.GetConnectionString("DbConnection"), //Conexión con la base de datos
+        builder.Configuration.GetConnectionString("DbConnection"), //Conexiï¿½n con la base de datos
         npgsqlOptions => npgsqlOptions.MigrationsAssembly("UpSkills.Api") //El proyecto donde se va a configurar la base de datos (esta misma API)
     )
 );
 
-builder.Services.AddOpenApi(); //Documentación de la API
-builder.Services.AddControllers(); //Añadir todos los controladores / enpoints de la API
-builder.Services.AddMemoryCache(); //Añadir el servicio de Memoria Cache
+builder.Services.AddOpenApi(); //Documentaciï¿½n de la API
+builder.Services.AddControllers(); //Aï¿½adir todos los controladores / enpoints de la API
+builder.Services.AddMemoryCache(); //Aï¿½adir el servicio de Memoria Cache
 
-//Añadir y configurar AutoMapper para las conversiones entre DTO (Json) <-> Entidad (Tabla base de datos)
+//Aï¿½adir y configurar AutoMapper para las conversiones entre DTO (Json) <-> Entidad (Tabla base de datos)
 builder.Services.AddAutoMapper(config => config.AddProfile<AutoMapperConfig>());
 
-//Añadir los servicios que vamos a utilizar
+//Aï¿½adir los servicios que vamos a utilizar
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IPaisesService, PaisesService>();
 builder.Services.AddScoped<IRolesService, RolesService>();
 builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+builder.Services.AddScoped<ICategoriasService, CategoriasService>();
+builder.Services.AddScoped<ICursosService, CursosService>();
+builder.Services.AddScoped<IModulosService, ModulosService>();
+builder.Services.AddScoped<IMaterialesService, MaterialesService>();
+builder.Services.AddScoped<IInscripcionesService, InscripcionesService>();
 
-//Añadir politicas de origenes cruzados
+//Aï¿½adir politicas de origenes cruzados
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorClient", //Crear politica para permitir al cliente Blazor
@@ -46,7 +51,7 @@ builder.Services.AddCors(options =>
         );
 });
 
-//Añadir servicio de Tokens de sesion
+//Aï¿½adir servicio de Tokens de sesion
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
@@ -64,13 +69,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-app.MapControllers(); //Añadir los controladores / endpoints de la API
-app.UseHttpsRedirection(); //Añadir el redireccionamiento automatico si https esta disponible
+app.MapControllers(); //Aï¿½adir los controladores / endpoints de la API
+app.UseHttpsRedirection(); //Aï¿½adir el redireccionamiento automatico si https esta disponible
 
-//Añadir solo si estamos en desarrollo
+//Aï¿½adir solo si estamos en desarrollo
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi(); //Documentación de la API
+    app.MapOpenApi(); //Documentaciï¿½n de la API
     app.MapScalarApiReference(); //Documentador para la API (Scalar)
 }
 

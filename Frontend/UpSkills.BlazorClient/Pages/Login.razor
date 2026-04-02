@@ -1,42 +1,46 @@
-﻿@page "/login"
+@page "/login"
+@inject IJSRuntime JS
 
-<PageTitle>Login</PageTitle>
+<PageTitle>Ingresar | UpSkills</PageTitle>
+
 <div class="sub_page">
-<div class="hero_area">
-	<NavMenu />
-</div>
-<!-- login.html section -->
-<section class="contact_section layout_padding">
-	<div class="container contact_heading">
-		<h2>
-			Ingresa a tu cuenta
-		</h2>
-		<p>
-			Completa los campos para ingresar a tu cuenta, si no tienes una cuenta, registrate para empezar a aprender con nosotros.
-		</p>
-	</div>
-	<div class="container">
-		<form>
-			<div class="form-row">
-				<div class="form-group col-md-6">
-					<label for="email">Email</label>
-					<input type="email" class="form-control" id="email" />
-				</div>
-				<div class="form-group col-md-6">
-					<label for="password">Contraseña</label>
-					<input type="password" class="form-control" id="password" />
-				</div>
-			</div>
+    <div class="hero_area">
+        <NavMenu />
+    </div>
 
-			<div class="d-flex justify-content-center">
-				<button type="submit" class="btn btn-outline-primary">Ingresar</button>
-			</div>
-			<div class="d-flex justify-content-center">
-				<button type="button" class="btn btn-outline-primary" onclick="window.location.href='register'">Registro</button>
-			</div>
-		</form>
-	</div>
+    <section class="contact_section layout_padding">
+        <div class="container contact_heading">
+            <h2>Ingresa a tu cuenta</h2>
+            <p>Completa los campos para ingresar. Si no tienes cuenta, regístrate para empezar a aprender.</p>
+        </div>
 
-</section>
-<!-- end login.html section -->
+        <div class="container" style="max-width:550px;">
+            @if (!string.IsNullOrEmpty(MensajeError))
+            {
+                <div class="alert alert-danger">@MensajeError</div>
+            }
+            @if (!string.IsNullOrEmpty(MensajeExito))
+            {
+                <div class="alert alert-success">@MensajeExito</div>
+            }
+
+            <form @onsubmit="HandleLogin">
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" class="form-control" @bind="Correo" placeholder="correo@ejemplo.com" required />
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" class="form-control" @bind="Contrasena" placeholder="••••••••" required />
+                </div>
+
+                <div class="d-flex justify-content-center mt-4" style="gap:12px;">
+                    <button type="submit" class="btn-upskills-primary" disabled="@Cargando">
+                        @(Cargando ? "Ingresando..." : "Ingresar")
+                    </button>
+                    <a href="/register" class="btn-upskills-secondary">Registrarse</a>
+                </div>
+            </form>
+        </div>
+    </section>
 </div>

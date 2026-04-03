@@ -12,7 +12,7 @@ public class ModulosController(IModulosService _ModulosService) : ControllerBase
     public async Task<IActionResult> GetByCurso(long cursoId)
     {
         var response = await _ModulosService.GetByCurso(cursoId);
-        return StatusCode((int)response.statusCode, response.statusCode == System.Net.HttpStatusCode.NoContent ? null : response.value);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     [HttpPost]
@@ -22,7 +22,7 @@ public class ModulosController(IModulosService _ModulosService) : ControllerBase
             return BadRequest(ModelState);
 
         var response = await _ModulosService.Create(dto);
-        return StatusCode((int)response.statusCode, response.statusCode == System.Net.HttpStatusCode.Created ? response.value : response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     [HttpPut("{id}")]
@@ -32,13 +32,13 @@ public class ModulosController(IModulosService _ModulosService) : ControllerBase
             return BadRequest(ModelState);
 
         var response = await _ModulosService.Update(id, dto);
-        return StatusCode((int)response.statusCode, response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         var response = await _ModulosService.Delete(id);
-        return StatusCode((int)response.statusCode, response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 }

@@ -13,7 +13,7 @@ public class InscripcionesController(IInscripcionesService _InscripcionesService
     public async Task<IActionResult> GetByUsuario(long usuarioId)
     {
         var response = await _InscripcionesService.GetByUsuario(usuarioId);
-        return StatusCode((int)response.statusCode, response.statusCode == System.Net.HttpStatusCode.NoContent ? null : response.value);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     /// <summary>Inscripciones por curso (para instructor)</summary>
@@ -21,7 +21,7 @@ public class InscripcionesController(IInscripcionesService _InscripcionesService
     public async Task<IActionResult> GetByCurso(long cursoId)
     {
         var response = await _InscripcionesService.GetByCurso(cursoId);
-        return StatusCode((int)response.statusCode, response.statusCode == System.Net.HttpStatusCode.NoContent ? null : response.value);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     /// <summary>Crear inscripción (M4-RF1, M4-RF3)</summary>
@@ -32,7 +32,7 @@ public class InscripcionesController(IInscripcionesService _InscripcionesService
             return BadRequest(ModelState);
 
         var response = await _InscripcionesService.Create(dto);
-        return StatusCode((int)response.statusCode, response.statusCode == System.Net.HttpStatusCode.Created ? response.value : response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     /// <summary>Cambiar estado: 1=Pendiente, 2=Aprobada, 3=Rechazada (M4-RF2)</summary>
@@ -40,6 +40,6 @@ public class InscripcionesController(IInscripcionesService _InscripcionesService
     public async Task<IActionResult> CambiarEstado(long id, int estado)
     {
         var response = await _InscripcionesService.CambiarEstado(id, estado);
-        return StatusCode((int)response.statusCode, response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 }

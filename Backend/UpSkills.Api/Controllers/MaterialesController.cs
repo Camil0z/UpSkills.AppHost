@@ -12,7 +12,7 @@ public class MaterialesController(IMaterialesService _MaterialesService) : Contr
     public async Task<IActionResult> GetByModulo(long moduloId)
     {
         var response = await _MaterialesService.GetByModulo(moduloId);
-        return StatusCode((int)response.statusCode, response.statusCode == System.Net.HttpStatusCode.NoContent ? null : response.value);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     [HttpPost]
@@ -22,7 +22,7 @@ public class MaterialesController(IMaterialesService _MaterialesService) : Contr
             return BadRequest(ModelState);
 
         var response = await _MaterialesService.Create(dto);
-        return StatusCode((int)response.statusCode, response.statusCode == System.Net.HttpStatusCode.Created ? response.value : response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     [HttpPut("{id}")]
@@ -32,13 +32,13 @@ public class MaterialesController(IMaterialesService _MaterialesService) : Contr
             return BadRequest(ModelState);
 
         var response = await _MaterialesService.Update(id, dto);
-        return StatusCode((int)response.statusCode, response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
         var response = await _MaterialesService.Delete(id);
-        return StatusCode((int)response.statusCode, response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 }

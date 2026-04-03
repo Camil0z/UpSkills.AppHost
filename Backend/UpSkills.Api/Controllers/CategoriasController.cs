@@ -32,6 +32,6 @@ public class CategoriasController(ICategoriasService _CategoriasService, IMemory
 
         _MemoryCache.Remove(nameof(CategoriasController) + "_GetAll");
         var response = await _CategoriasService.Create(dto);
-        return StatusCode((int)response.statusCode, response.statusCode == System.Net.HttpStatusCode.Created ? response.value : response.message);
+        return StatusCode((int)response.statusCode, response.value);
     }
 }
